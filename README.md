@@ -13,7 +13,7 @@ This week is **Sprint 2** of **Phase 3 — Deep Learning & Applied Project**. Sp
 | 2 | Building CNNs & Transfer Learning | [`Building_CNNs.ipynb`](./Day2/Building_CNNs.ipynb) | ✅ |
 | 3 | RNNs & LSTMs for Sequential Data | [`RNNs_LSTMs.ipynb`](./Day3/RNNs_LSTMs.ipynb) | ✅ |
 | 4 | Attention & Transformers | [`Attention_Transformers.ipynb`](./Day4/Attention_Transformers.ipynb) | ✅ |
-| 5 | — | — | ⬜ |
+| 5 | Sprint 2 Close-Out & Model Advancement | [`Sprint2_Close-Out.ipynb`](./Day5/Sprint2_Close-Out.ipynb) | ✅ |
 
 ---
 
@@ -31,7 +31,8 @@ Completed the mid-sprint architectural trio by shifting from spatial data (Days 
 ### [Day 4 — Attention & Transformers](./Day4/README.md)
 Completed the Week 7 architectural quartet by shifting from sequential signal processing (Day 3) to **natural language processing** — fine-tuning a pre-trained **AraBERT v2** Transformer on the **330K Arabic Sentiment Reviews** dataset (binary positive/negative classification). Explained the fundamental limitations of RNN/LSTM memory (sequential bottleneck, vanishing gradients, fixed-length hidden state) and how **self-attention** solves them (parallel processing, direct long-range connections, dynamic relevance). Described the full Transformer architecture — token embeddings, positional encoding, multi-head self-attention, feed-forward networks, layer normalization, and residual connections. Loaded AraBERT v2 (`aubmindlab/bert-base-arabertv2`, ~110M parameters) pre-trained on 67M Arabic sentences, created a stratified 20,000-sample subset with 50/50 class balance, and fine-tuned using the Hugging Face `Trainer` API with FP16 mixed precision, linear warmup+decay scheduling, and a custom `EarlyStoppingTrainer` subclass. Compared the Transformer against the Day 3 LSTM across architectural properties (parallelization, long-range dependencies, pre-trained knowledge, data efficiency, interpretability, inference speed) and made the **evidence-based architecture decision** to use AraBERT as the project's core architecture for Arabic text classification — following the Week 7 principle: match the architecture to the data type (Text → Transformer, Signals → LSTM, Images → CNN). Also refactored the notebook from a CPU-only manual-loop training script into a GPU-accelerated Colab-ready pipeline with automatic checkpoint persistence to Google Drive.
 
-### Day 5 — *(Pending)*
+### [Day 5 — Sprint 2 Close-Out & Model Advancement](./Day5/README.md)
+Completed the Sprint 2 close-out by confirming the **dense (fully connected) network** as the correct core architecture for the project's tabular clinical data (918 patients × 11 features), following the Week 7 principle: *match the architecture to the data and task*. Rejected CNN (images), LSTM (sequential signals), and Transformer (text) as inappropriate for tabular data — the Day 3 LSTM (ECG, F1=0.7676) and Day 4 AraBERT (Arabic text, F1=0.9000) were educational experiments on different datasets. Conducted 6 systematic experiments (EXP-00 to EXP-05) with full configuration logging, testing wider/deeper architectures, learning rate scheduling (ReduceLROnPlateau), and combined Dropout+L2 regularization. **EXP-02** (wider [128,64] + LR scheduling) achieved the highest F1=0.8585. The **final evaluated model EXP-05** ([128,64] + Dropout(0.3) + L2(0.001) + scheduling) achieved F1=0.8426, beating the Week 6 Logistic Regression baseline (F1=0.8208) by +2.66% but not surpassing the Sprint 1 neural network (F1=0.8654). Produced a complete comparison table, confusion matrix, classification report, training/validation curves, Sprint Review evidence, and Sprint Retrospective with a concrete Sprint 3 action (k-fold cross-validation + gradient boosting exploration).
 
 ---
 
@@ -77,6 +78,11 @@ Completed the Week 7 architectural quartet by shifting from sequential signal pr
 | **FP16 Mixed Precision** | 4 | GPU-accelerated training with reduced memory footprint |
 | **Architecture Selection** | 4 | Matching model architecture to data type (Text → Transformer) |
 | **TensorFlow/Keras Sequential** | 3 | SimpleRNN, LSTM, Bidirectional layers |
+| **Experiment Tracking** | 5 | 6 experiments with full configuration and metrics |
+| **Learning Rate Scheduling** | 5 | ReduceLROnPlateau for convergence stability |
+| **L2 Regularization** | 5 | Weight decay combined with Dropout |
+| **Sprint Review** | 5 | Deliverables, metrics, improvement analysis |
+| **Sprint Retrospective** | 5 | What went well, what to improve, Sprint 3 action |
 
 ---
 
@@ -98,6 +104,8 @@ BinX_Week_07/
 │   ├── Attention_Transformers1.ipynb
 │   └── README.md
 ├── Day5/
+│   ├── Sprint2_Close-Out.ipynb
+│   └── README.md
 └── README.md                      ← You are here
 ```
 
